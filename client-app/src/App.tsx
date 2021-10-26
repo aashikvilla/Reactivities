@@ -13,8 +13,8 @@ function App() {
       console.log('activities',res);
       setactivities(res.data);
       console.log("data",activities);
-    })
-  },[])
+    });
+  },[]);
 
   return (
     <div>
