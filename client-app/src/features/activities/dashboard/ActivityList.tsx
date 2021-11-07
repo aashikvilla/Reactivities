@@ -1,5 +1,6 @@
 import { observer } from "mobx-react-lite";
-import React, { useEffect, useState } from "react";
+import React, {useState } from "react";
+import { NavLink } from "react-router-dom";
 import { Button, Item, Label, Segment } from "semantic-ui-react";
 import { useStore } from "../../../app/stores/store";
 
@@ -7,7 +8,7 @@ export default observer(function ActivityList() {
     const [target, settarget] = useState('')
     
     const {activityStore}=useStore();
-    const{loading,handleDelete,handleSelctedActivity,activitiesByDate:activities}=activityStore
+    const{loading,handleDelete,activitiesByDate:activities}=activityStore
 
     
     
@@ -25,7 +26,7 @@ export default observer(function ActivityList() {
                             <div>{activity.city}</div>
                         </Item.Description>
                         <Item.Extra>
-                            <Button floated='right' content='View' color='blue' onClick={()=>handleSelctedActivity(activity.id)}/>
+                            <Button floated='right' content='View' color='blue'  as={NavLink} to={`/activities/${activity.id}`}/>
                             <Button loading={loading && target===activity.id} floated='right' content='Delete' color='red' 
                             onClick={()=>{settarget(activity.id);handleDelete(activity.id)}}/>
                             <Label basic content={activity.category}/>

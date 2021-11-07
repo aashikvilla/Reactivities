@@ -24,12 +24,9 @@ export default class ActivityStore{
    loadActivities= async ()=> {      
        try{
            const activities=await apiservice.Activities.list();
-           console.log("from api",activities)
-           let newres: Activity[]=[];
+           console.log("from api",activities);           
             activities.forEach((activity)=>{
-
-                activity.date=activity.date.split('T')[0];
-                this.activityRegistry.set(activity.id,activity);
+                this.setActivity(activity);              
                 })           
                      
             this.setLoadingInitial(false)
@@ -43,32 +40,45 @@ export default class ActivityStore{
        
    }
 
+   loadActivity=async(id:string)=>{
+       let activity=this.getActivity(id);
+       if(activity){
+           this.selectedActivity=activity;
+           return activity;
+       }
+       else{
+        this.setLoadingInitial(true);
+           try{               
+               activity=await apiservice.Activities.details(id);
+               this.setActivity(activity);
+               this.selectedActivity=activity;
+               this.setLoadingInitial(false);
+               return activity;
+           }
+           catch(error){
+               this.setLoadingInitial(false);
+           }
+       }
+   }
+
+   private getActivity=(id:string)=>{
+       return this.activityRegistry.get(id);
+   }
+   private setActivity=(activity:Activity)=>{
+    activity.date=activity.date.split('T')[0];
+    this.activityRegistry.set(activity.id,activity);
+
+   }
+
    setLoadingInitial = (v:boolean)=>{
        this.loadingInitial=v;
    }
    setLoading = (v:boolean)=>{
     this.loading=v;
-}
+   }
 
 
    
-   handleSelctedActivity=(id:string)=>{
-        this.selectedActivity=this.activityRegistry.get(id);
-    }
-
-    handleCancelSelctedActivity=()=>{
-        this.selectedActivity=undefined;
-    }
-
-    openForm=(id?:string)=>{
-        id?this.handleSelctedActivity(id):this.handleCancelSelctedActivity();
-        this.setEditMode(true);
-    }
-
-    closeForm=()=>{
-        this.setEditMode(false);
-    }
-
     setEditMode=(state:boolean)=>{
         this.editMode=state;
     }
@@ -89,7 +99,7 @@ export default class ActivityStore{
         {   await apiservice.Activities.update(activity)
             //this.setActivities([...this.activities.filter(a=>a.id!==activity.id),activity]);
             this.activityRegistry.set(activity.id,activity);
-            this.handleSelctedActivity(activity.id);
+           
             this.setEditMode(false);
             this.setLoading(false);
           
@@ -98,7 +108,7 @@ export default class ActivityStore{
             activity.id=uuid();
             await apiservice.Activities.create(activity)
             this.activityRegistry.set(activity.id,activity);
-            this.handleSelctedActivity(activity.id);
+          
             this.setEditMode(false);
             this.setLoading(false);
         }
