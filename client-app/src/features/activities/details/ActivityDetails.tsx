@@ -1,37 +1,40 @@
 import { observer } from 'mobx-react-lite';
-import React from 'react'
-import { Button, ButtonGroup, Card } from 'semantic-ui-react'
+import { useEffect } from 'react'
+import { useParams } from 'react-router';
+import { Grid } from 'semantic-ui-react'
+import LoadingComponent from '../../../app/layout/LoadingComponent';
 import { useStore } from '../../../app/stores/store'
+import ActivityDetailsChat from './ActivityDetailsChat';
+import ActivityDetailsHeader from './ActivityDetailsHeader';
+import ActivityDetailsInfo from './ActivityDetailsInfo';
+import ActivityDetailsSideBar from './ActivityDetailsSideBar';
 
-function ActivityDetails() {
+
+export default observer(function ActivityDetails() {
     const{activityStore}=useStore();
-    const{selectedActivity:activity,openForm,loading,handleCancelSelctedActivity}=activityStore
+    const{selectedActivity:activity, loadActivity}=activityStore;
+    const {id}=useParams();
+
+    useEffect(() => {
+      if(id){
+          loadActivity(id);
+      }      
+    }, [id,loadActivity])
+
+
     if(!activity)
-    return <></>;
+    return <LoadingComponent inverted={false} content={''} />;
     return (
-        
-        <Card style={{ marginRight:'0'}}>
-            <img src={`/assets/categoryImages/${activity.category}.jpg`} alt={activity.category} />
-            <Card.Content>
-            <Card.Header>{activity.title}</Card.Header>
-            <Card.Meta>
-                <span >{activity.date}</span>
-            </Card.Meta>
-            <Card.Description>
-               {activity.description}
-            </Card.Description>
-            </Card.Content>
-            <Card.Content extra>
-                <ButtonGroup widths='2'>
-                    <Button basic color='blue' content='Edit' onClick={()=>openForm(activity.id)}/>
-                    <Button loader={loading} basic color='grey' content='Cancel' 
-                    onClick={()=>handleCancelSelctedActivity()}/>
-                </ButtonGroup>
-            
-            </Card.Content>
-        </Card>
+       <Grid>
+           <Grid.Column width={10}>
+               <ActivityDetailsHeader activity={activity}/>
+               <ActivityDetailsInfo activity={activity}/>
+               <ActivityDetailsChat/>
+            </Grid.Column>
+            <Grid.Column width={6}>
+               <ActivityDetailsSideBar/>
+           </Grid.Column>
+       </Grid>
         
     )
-}
-
-export default observer(ActivityDetails)
+})

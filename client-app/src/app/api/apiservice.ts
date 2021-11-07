@@ -30,7 +30,7 @@ const request={
 
 const Activities={
     list:()=>request.get<Activity[]>('activities'),
-    details:(id:string)=>request.get<Activity>('activities'),
+    details:(id:string)=>request.get<Activity>(`activities/${id}`),
     create:(activity:Activity)=>request.post('activities',activity),
     update:(activity:Activity)=>request.put(`activities/${activity.id}`,activity),
     delete:(id:string)=>request.get(`activities/${id}`),
