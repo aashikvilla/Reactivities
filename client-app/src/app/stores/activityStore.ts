@@ -32,7 +32,9 @@ export default class ActivityStore{
 
    loadActivities= async ()=> {      
        try{
+
            const activities=await apiservice.Activities.list();          
+
             activities.forEach((activity)=>{
                 this.setActivity(activity);              
                 })           
