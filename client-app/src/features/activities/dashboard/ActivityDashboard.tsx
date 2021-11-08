@@ -26,7 +26,7 @@ function ActivityDashboard(){
     return(
         <>
         <Grid>
-            <Grid.Column width='14'>         
+            <Grid.Column width='10'>         
                 <ActivityList />
             </Grid.Column>
             <Grid.Column width='6'>         
