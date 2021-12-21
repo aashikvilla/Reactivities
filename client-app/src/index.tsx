@@ -5,14 +5,20 @@ import App from './app/layout/App';
 import reportWebVitals from './reportWebVitals';
 import 'semantic-ui-css/semantic.min.css'
 import { store, StoreContext } from './app/stores/store';
-import { BrowserRouter } from 'react-router-dom';
+import { Router } from 'react-router-dom';
 import 'react-calendar/dist/Calendar.css'
+import 'react-toastify/dist/ReactToastify.min.css'
+import{createBrowserHistory } from 'history';
+import { BrowserRouter ,useNavigate  ,useLocation} from 'react-router-dom';
+
+
+export const history =createBrowserHistory();
+
 
 ReactDOM.render(
   <StoreContext.Provider value={store}>
-    <BrowserRouter>
-    
-    <App />
+    <BrowserRouter>    
+     <App />
     </BrowserRouter>
   </StoreContext.Provider>,
   document.getElementById('root')
