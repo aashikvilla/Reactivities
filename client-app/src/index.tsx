@@ -10,6 +10,7 @@ import 'react-calendar/dist/Calendar.css'
 import 'react-toastify/dist/ReactToastify.min.css'
 import{createBrowserHistory } from 'history';
 import { BrowserRouter ,useNavigate  ,useLocation} from 'react-router-dom';
+import 'react-datepicker/dist/react-datepicker.css'
 
 
 export const history =createBrowserHistory();
