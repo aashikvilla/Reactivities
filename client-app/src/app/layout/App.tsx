@@ -11,6 +11,8 @@ import TestErrors from '../../features/errors/TestError';
 import { ToastContainer } from 'react-toastify';
 import NotFound from '../../features/errors/NotFound';
 import {createBrowserHistory} from 'history'
+import LoginForm from '../../features/users/LoginForm';
+import RegisterForm from '../../features/users/RegisterForm';
 
 export const history= createBrowserHistory();
 
@@ -36,6 +38,8 @@ function App() {
                 <Route key={location.key} path='/manage/:id' element={<ActivityForm />} />
                 <Route key={location.key} path='/CreateActivity' element={<ActivityForm />} />
                 <Route path='/errors' element={<TestErrors />} />
+                <Route path='/login' element={<LoginForm />} />
+                <Route path='/register' element={<RegisterForm />} />
                 <Route path="*" element={<NotFound/>}/>
               </Routes>
           </Container>
