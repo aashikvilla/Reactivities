@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{useEffect} from 'react';
 import { Container } from 'semantic-ui-react';
 import NavBar from './NavBar';
 import ActivityDashboard from '../../features/activities/dashboard/ActivityDashboard';
@@ -13,6 +13,8 @@ import NotFound from '../../features/errors/NotFound';
 import {createBrowserHistory} from 'history'
 import LoginForm from '../../features/users/LoginForm';
 import RegisterForm from '../../features/users/RegisterForm';
+import { useStore } from '../stores/store';
+import LoadingComponent from './LoadingComponent';
 
 export const history= createBrowserHistory();
 
@@ -20,7 +22,19 @@ export const history= createBrowserHistory();
 
 function App() {
   const location =useLocation();
- 
+  const {commonStore, userStore}=useStore();
+
+ useEffect(()=>{
+  if(commonStore.token){
+    userStore.getUser().finally(()=>commonStore.setAppLoaded());
+  } else{
+    commonStore.setAppLoaded();
+  }
+
+ },[commonStore,userStore])
+  
+ if(!commonStore.appLoaded) return <LoadingComponent content={"Loading app..."} inverted={false}/>
+
   return (
     <>
     

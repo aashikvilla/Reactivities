@@ -9,7 +9,7 @@ import { Router } from 'react-router-dom';
 import 'react-calendar/dist/Calendar.css'
 import 'react-toastify/dist/ReactToastify.min.css'
 import{createBrowserHistory } from 'history';
-import { BrowserRouter ,useNavigate  ,useLocation} from 'react-router-dom';
+import { unstable_HistoryRouter as HistoryRouter ,useNavigate  ,useLocation} from 'react-router-dom';
 import 'react-datepicker/dist/react-datepicker.css'
 
 
@@ -18,9 +18,9 @@ export const history =createBrowserHistory();
 
 ReactDOM.render(
   <StoreContext.Provider value={store}>
-    <BrowserRouter>    
+    <HistoryRouter history={history}>    
      <App />
-    </BrowserRouter>
+    </HistoryRouter>
   </StoreContext.Provider>,
   document.getElementById('root')
 );
